@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vitrine de Produtos</title>
+  <style>
+    /* Estilos gerais */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .titulo {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    /* Estilos da vitrine */
+    .vitrine {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .produto {
+      width: 300px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      margin: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .produto__imagem {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 10px;
+    }
+
+    .produto__nome {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .produto__preco {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .produto__descricao {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="titulo">Vitrine de Produtos</h1>
+  <div class="vitrine" id="vitrine-container"></div>
+</div>
+
+<script>
+    // Função para buscar os dados da API e criar a vitrine
+    async function buscarDadosEAtualizarVitrine() {
+      try {
+        const response = await fetch('http://localhost:8080/food');
+        const data = await response.json();
+
+        // Verifica se a resposta da API é um array de objetos de produtos
+        if (Array.isArray(data)) {
+          const produtos = data;
+
+          // Código para criar a vitrine a partir dos dados obtidos
+          const vitrineContainer = document.getElementById('vitrine-container');
+
+          for (let produto of produtos) {
+            const produtoHTML = `
+              <div class="produto">
+                <img class="produto__imagem" src="${produto.image}" alt="Imagem do Produto">
+                <h2 class="produto__nome">${produto.title}</h2>
+                <p class="produto__preco">R$ ${produto.price.toFixed(2)}</p>
+                <p class="produto__descricao">${produto.description}</p>
+              </div>
+            `;
+
+            vitrineContainer.innerHTML += produtoHTML;
+          }
+        } else {
+          console.error('Resposta da API inválida.');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados da API:', error);
+      }
+    }
+
+    // Chama a função para buscar os dados e atualizar a vitrine
+    buscarDadosEAtualizarVitrine();
+  </script>
+</body>
+</html>

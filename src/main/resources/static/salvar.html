@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SYSTEM</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style type="text/css">
+        body{
+          background-color: purple;
+        }
+        html{
+         margin-left: 10%;
+         margin-right: 10%;
+         margin-top: 2%;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h2>Cadastro</h2>
+
+<form class="row g-3" style="background-color: purple;">
+    <div class="col-md-6">
+        <label for="title" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="title">
+    </div>
+    <div class="col-md-6">
+        <label for="price" class="form-label">Preço</label>
+        <input type="number" class="form-control" id="price">
+    </div>
+    <div class="col-12">
+        <label for="image" class="form-label">Imagem</label>
+        <input type="text" class="form-control" id="image">
+    </div>
+    <div class="col-12">
+        <label for="description" class="form-label">Descrição</label>
+        <input type="text" class="form-control" id="description">
+    </div>
+
+    <div class="col-12">
+        <button type="button" class="btn btn-primary" onclick="salvarUsuario()">Cadastrar</button>
+    </div>
+</form>
+
+
+
+<!-- Option 1: jquery Bundle with Popper -->
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<!-- Option 2: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+        function salvarUsuario(){
+            var title = $("#title").val();
+            var price = $("#price").val();
+            var image = $("#image").val();
+            var description = $("#description").val();
+
+            if(title == null || title != null && title.trim() == ''){
+                alert("Informe o nome");
+	            $("#title").focus();
+	            return;
+            }
+
+            if(price == null || price != null && price.trim() == ''){
+                alert("Informe o preço");
+	            $("#price").focus();
+	            return;
+            }
+
+            if(image == null || image != null && image.trim() == ''){
+                alert("Informe o link da imagem");
+	            $("#image").focus();
+	            return;
+            }
+
+            if(description == null || description != null && description.trim() == ''){
+                alert("Informe uma descrição");
+	            $("#description").focus();
+	            return;
+            }
+
+
+
+            $.ajax({
+                method: "POST",
+                url: "/food",
+                data: JSON.stringify({
+                    title: title,
+                    price: price,
+                    image: image,
+                    description: description
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (response){
+                    alert("Salvo com Sucesso");
+                }
+            }).fail(function (xhr, status, errorThrown){
+                alert("Error ao Salvar: " + xhr.responseText);
+            });
+        }
+    </script>
+</body>
+</html>
